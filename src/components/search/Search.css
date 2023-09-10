@@ -1,0 +1,8 @@
+.search-wraper{
+    margin: 0 auto;
+}
+#pokemon-input-wraper{
+    margin-top: 2rem;
+    width: 600px;
+    padding: 1rem;
+}
