@@ -38,7 +38,7 @@ function PokemonList(){
     
     return <div className="pokemon-list-wraper">
     <div className="pokemon-wraper"> {(isLodding) ? ' Loadding...': pokemonList.map((p)=>{
-       return <Pokemon name={p.name} image={p.image} key={p.id}/>
+       return <Pokemon name={p.name} image={p.image} key={p.id} id={p.id}/>
     })}</div>
     <div className="controls">
         <button disabled={prevUrl === null} onClick={()=>{
