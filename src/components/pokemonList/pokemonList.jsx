@@ -1,57 +1,10 @@
-import { useEffect } from "react"
-import axios from "axios"
 import './PokemonList.css'
-import { useState } from "react"
 import Pokemon from "../pokemon/Pokemon"
+import usePokemon from "../hooks/usePokemon"
 
 function PokemonList() {
 
-    // const [pokemonList, setPokemonList] = useState([])
-    // const [isLodding, setIsLodding] = useState(true)
-    // const [pokedexUrl,setPokedexUrl] = useState()
-    // const [nextUrl,setNextUrl] = useState('')
-    // const [prevUrl,setPrevUrl] = useState('')
-
-    const [pokemonListState, setPokemonListState] = useState({
-        isLodding: true,
-        pokemonList: [],
-        pokedexUrl: 'https://pokeapi.co/api/v2/pokemon',
-        nextUrl: '',
-        prevUrl: ''
-    })
-    async function downloadPokemons() {
-        setPokemonListState({ ...pokemonListState, isLodding: true })
-        const response = await axios.get(pokemonListState.pokedexUrl)
-        const pokemonList = response.data.results
-        setPokemonListState((state) => (
-            {
-                ...state, nextUrl: response.data.next,
-                prevUrl: response.data.previous
-            }
-        ))
-        const pokemonPromise = pokemonList.map((pokemon) => axios.get(pokemon.url))
-        const pokemonData = await axios.all(pokemonPromise)
-        const res = (pokemonData.map((pokemonData) => {
-            const pokemon = pokemonData.data
-            return {
-                id: pokemon.id,
-                name: pokemon.name,
-                image: pokemon.sprites.other.dream_world.front_default,
-                types: pokemon.types
-            }
-        }))
-        // console.log(res);
-        // setPokemonList(res)
-        // setIsLodding(false)
-        setPokemonListState((state) => (
-            {
-                ...state, pokemonList: res,
-                isLodding: false
-            }))
-        }
-    useEffect(() => {
-        downloadPokemons()
-    }, [pokemonListState.pokedexUrl])
+    const [pokemonListState,setPokemonListState] = usePokemon('https://pokeapi.co/api/v2/pokemon', false)
 
     return <div className="pokemon-list-wraper">
         <div className="pokemon-wraper"> {(pokemonListState.isLodding) ? ' Loadding...' : pokemonListState.pokemonList.map((p) => {
